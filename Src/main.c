@@ -58,14 +58,8 @@
 uint8_t aTxStartMessage[] = "\r\n****CAT-TRACK SYS****\r\n\r\n";
 uint8_t aRxBuffer[20];
 
-unsigned char cr = 0x0D;
-unsigned char tx_data = 0x00;
-unsigned char tx_indx = 0x00;
-unsigned char rx_data = 0x00;
-unsigned char rx_indx = 0x00;
-unsigned char rx_buff[32];
+__IO ITStatus UartReady = RESET; 
 
-char buff[32]="";
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -235,32 +229,8 @@ static void MX_NVIC_Init(void)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-   //HAL_UART_Transmit(&huart1, (uint8_t *)aRxBuffer, 10,0xFFFF);
+	//HAL_UART_Transmit(&huart1, (uint8_t *)aRxBuffer, 10,0xFFFF);
 	//HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 1);
-	     if (huart->Instance == USART1)     //current UART
-          {
-               if(rx_indx == 0){for (int i=0;i<100;i++) rx_buff[i]=0;}
-               
-               if(rx_data != cr)
-               {
-                    rx_buff[rx_indx] = rx_data;
-               }
-               else if(rx_data == cr)
-               {
-                    tx_indx = 0x00;
-                    tx_data = rx_buff[tx_indx];                         
-        HAL_UART_Transmit_IT(huart, &tx_data, 1);               
-               }
-                    
-               rx_indx ++;
-               
-               if(rx_indx > 0x1F)
-               {
-                    rx_indx = 0;
-               }
-          
-               HAL_UART_Receive_IT(&huart1, &rx_data, 1);     //activate UART receive interrupt every time
-          }
 }
 /* USER CODE END 4 */
 

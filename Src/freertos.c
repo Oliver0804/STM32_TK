@@ -176,8 +176,10 @@ void StartGPSTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	//HAL_UART_Transmit_IT(&huart1, (uint8_t *)"TEST", sizeof("TEST"));
-	 // HAL_UART_Receive_IT(&huart1, (uint8_t *)aRxBuffer, 10);
+if(HAL_UART_Receive_IT(&huart2,(uint8_t *)&value,1) != HAL_OK){    //?????main???while(1)?????????????????
+        HAL_UART_Transmit(&huart2, (uint8_t *)&"ERROR\r\n",7,10);    
+        while(1);
+} 
     osDelay(1000);
   }
   /* USER CODE END StartGPSTask */
